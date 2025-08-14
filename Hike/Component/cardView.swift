@@ -10,17 +10,15 @@ import SwiftUI
 struct cardView: View {
     @State private var imageNumber: Int = 1
     @State private var randomNumber: Int = 1
+    @State private var isShowingSheet: Bool = false
     
     func randomImage(){
-           repeat {
-               randomNumber = Int.random(in: 1...5)
-           } while randomNumber == imageNumber
-           imageNumber = randomNumber
-           }
-        
-        
-        
-    
+        repeat {
+            randomNumber = Int.random(in: 1...5)
+        } while randomNumber == imageNumber
+        imageNumber = randomNumber
+    }
+
     
     var body: some View {
         
@@ -38,11 +36,23 @@ struct cardView: View {
                         
                         Button{
                             //here is what action will gonna happen when press the button
+                            
                             print("the button was pressed!")
+                            isShowingSheet.toggle()
                         } label: {
                             //here is what the appearance of the button gonna be
                             CustomButtonView()
                                 .frame(width: 58, height: 58)
+                        }
+                        .sheet(isPresented: $isShowingSheet){
+                            SettingsView()
+                            
+                            //it show a line that let you know you can drag down the sheet (its for UX)
+                                .presentationDragIndicator(.visible)
+                            
+                                //it show first the smallest size in the array which is medium(half of the screen) and then you can drag it up more for large screen
+                                .presentationDetents([.medium,.large])
+                                
                         }
                     }
                     
